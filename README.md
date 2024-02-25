@@ -32,15 +32,6 @@
 
 # <img src="https://opentelemetry.io/img/logos/opentelemetry-logo-nav.png" alt="OpenTelemetry Icon" width="45" height=""> OpenTelemetry Instrumentation for Java
 
-* [About](#about)
-* [Getting Started](#getting-started)
-* [Configuring the Agent](#configuring-the-agent)
-* [Supported libraries, frameworks, and application servers](#supported-libraries-frameworks-and-application-servers)
-* [Creating agent extensions](#creating-agent-extensions)
-* [Manually instrumenting](#manually-instrumenting)
-* [Logger MDC auto-instrumentation](#logger-mdc-mapped-diagnostic-context-auto-instrumentation)
-* [Troubleshooting](#troubleshooting)
-* [Contributing](#contributing)
 
 ## About
 
