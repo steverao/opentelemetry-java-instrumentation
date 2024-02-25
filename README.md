@@ -177,8 +177,8 @@ Thanks to all the people who already contributed!
   <img src="https://contributors-img.web.app/image?repo=open-telemetry/opentelemetry-java-instrumentation" />
 </a>
 
-[config]: https://opentelemetry.io/docs/instrumentation/java/automatic/agent-config/
+[config]: https://opentelemetry.io/docs/instrumentation/java/automatic/agent-config
 
-[manual]: https://opentelemetry.io/docs/instrumentation/java/manual/
+[manual]: https://opentelemetry.io/docs/instrumentation/java/manual
 
 [suppress]: https://opentelemetry.io/docs/instrumentation/java/automatic/agent-config/#suppressing-specific-auto-instrumentation
