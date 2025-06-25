@@ -5,6 +5,7 @@
 
 package io.opentelemetry.instrumentation.api.incubator.instrumenter;
 
+import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.instrumentation.api.instrumenter.AttributesExtractor;
 import io.opentelemetry.instrumentation.api.instrumenter.ContextCustomizer;
 import io.opentelemetry.instrumentation.api.instrumenter.OperationMetrics;
@@ -29,6 +30,15 @@ public interface InstrumenterCustomizer {
    * @return the name of the instrumentation this customizer targets
    */
   String getInstrumentationName();
+
+  /**
+   * Returns the {@link SpanKind} that this customizer applies to. This allows distinguishing
+   * between different types of instrumenters (e.g., client, server) within the same
+   * instrumentation.
+   *
+   * @return the span kind this customizer targets
+   */
+  SpanKind getSpanKind();
 
   /**
    * Adds a single AttributesExtractor to the instrumenter. This extractor will be used to extract

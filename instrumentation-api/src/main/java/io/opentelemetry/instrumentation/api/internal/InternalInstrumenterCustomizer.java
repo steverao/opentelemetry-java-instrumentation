@@ -5,6 +5,7 @@
 
 package io.opentelemetry.instrumentation.api.internal;
 
+import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.instrumentation.api.instrumenter.AttributesExtractor;
 import io.opentelemetry.instrumentation.api.instrumenter.ContextCustomizer;
 import io.opentelemetry.instrumentation.api.instrumenter.OperationMetrics;
@@ -18,6 +19,8 @@ import java.util.function.Function;
 public interface InternalInstrumenterCustomizer<REQUEST, RESPONSE> {
 
   String getInstrumentationName();
+
+  SpanKind getSpanKind();
 
   void addAttributesExtractor(AttributesExtractor<REQUEST, RESPONSE> extractor);
 

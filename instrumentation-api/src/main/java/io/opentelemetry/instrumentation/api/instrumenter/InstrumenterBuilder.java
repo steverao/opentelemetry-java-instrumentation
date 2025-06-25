@@ -285,10 +285,10 @@ public final class InstrumenterBuilder<REQUEST, RESPONSE> {
   private Instrumenter<REQUEST, RESPONSE> buildInstrumenter(
       InstrumenterConstructor<REQUEST, RESPONSE> constructor,
       SpanKindExtractor<? super REQUEST> spanKindExtractor) {
+    this.spanKindExtractor = spanKindExtractor;
 
     applyCustomizers(this);
 
-    this.spanKindExtractor = spanKindExtractor;
     return constructor.create(this);
   }
 
@@ -391,6 +391,11 @@ public final class InstrumenterBuilder<REQUEST, RESPONSE> {
             @Override
             public String getInstrumentationName() {
               return builder.instrumentationName;
+            }
+
+            @Override
+            public SpanKind getSpanKind() {
+              return builder.spanKindExtractor.extract(null);
             }
 
             @Override
