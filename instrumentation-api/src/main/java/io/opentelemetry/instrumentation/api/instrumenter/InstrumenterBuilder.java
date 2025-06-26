@@ -395,7 +395,11 @@ public final class InstrumenterBuilder<REQUEST, RESPONSE> {
 
             @Override
             public SpanKind getSpanKind() {
-              return builder.spanKindExtractor.extract(null);
+              try {
+                return builder.spanKindExtractor.extract(null);
+              } catch (RuntimeException e) {
+                return null;
+              }
             }
 
             @Override

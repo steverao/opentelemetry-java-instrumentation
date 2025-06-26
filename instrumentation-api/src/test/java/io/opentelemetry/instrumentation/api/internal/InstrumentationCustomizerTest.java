@@ -112,9 +112,10 @@ class InstrumentationCustomizerTest {
   }
 
   @Test
-  void testGetSpanKindForClientAndServer() {
+  void testGetSpanKind() {
     AtomicBoolean clientCustomizerCalled = new AtomicBoolean();
     AtomicBoolean serverCustomizerCalled = new AtomicBoolean();
+    AtomicBoolean exceptionCustomizerCalled = new AtomicBoolean();
 
     setCustomizer(
         customizer -> {
@@ -124,13 +125,18 @@ class InstrumentationCustomizerTest {
           } else if (customizer.getSpanKind() == SpanKind.SERVER) {
             serverCustomizerCalled.set(true);
             assertThat(customizer.getInstrumentationName()).isEqualTo("test");
+          } else if (customizer.getSpanKind() == null) {
+            // This case handles when spanKindExtractor throws an exception and returns null
+            exceptionCustomizerCalled.set(true);
+            assertThat(customizer.getInstrumentationName()).isEqualTo("test");
           }
         });
 
     // Build client instrumenter
     Instrumenter.<Map<String, String>, Map<String, String>>builder(
             otelTesting.getOpenTelemetry(), "test", unused -> "client-span")
-        .buildClientInstrumenter((carrier, key, value) -> {});
+        .buildClientInstrumenter((carrier, key, value) -> {
+        });
 
     // Build server instrumenter
     Instrumenter.<Map<String, String>, Map<String, String>>builder(
@@ -148,8 +154,20 @@ class InstrumentationCustomizerTest {
               }
             });
 
+    // Build instrumenter with a span kind extractor that throws exception with null input
+    Instrumenter.<Map<String, String>, Map<String, String>>builder(
+            otelTesting.getOpenTelemetry(), "test", unused -> "test-span")
+        .buildInstrumenter(
+            request -> {
+              if (request == null) {
+                throw new NullPointerException("Request cannot be null");
+              }
+              return SpanKind.CLIENT;
+            });
+
     assertThat(clientCustomizerCalled).isTrue();
     assertThat(serverCustomizerCalled).isTrue();
+    assertThat(exceptionCustomizerCalled).isTrue();
   }
 
   @Test
