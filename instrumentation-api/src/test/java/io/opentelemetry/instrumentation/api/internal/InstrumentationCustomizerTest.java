@@ -22,6 +22,7 @@ import io.opentelemetry.api.trace.SpanContext;
 import io.opentelemetry.api.trace.SpanId;
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.context.Context;
+import io.opentelemetry.context.propagation.TextMapGetter;
 import io.opentelemetry.instrumentation.api.incubator.instrumenter.InstrumenterCustomizerProvider;
 import io.opentelemetry.instrumentation.api.incubator.instrumenter.internal.InternalInstrumenterCustomizerProviderImpl;
 import io.opentelemetry.instrumentation.api.instrumenter.AttributesExtractor;
@@ -108,6 +109,65 @@ class InstrumentationCustomizerTest {
         .buildInstrumenter();
 
     assertThat(customizerCalled).isTrue();
+  }
+
+  @Test
+  void testGetSpanKind() {
+    AtomicBoolean clientCustomizerCalled = new AtomicBoolean();
+    AtomicBoolean serverCustomizerCalled = new AtomicBoolean();
+    AtomicBoolean exceptionCustomizerCalled = new AtomicBoolean();
+
+    setCustomizer(
+        customizer -> {
+          if (customizer.getSpanKind() == SpanKind.CLIENT) {
+            clientCustomizerCalled.set(true);
+            assertThat(customizer.getInstrumentationName()).isEqualTo("test");
+          } else if (customizer.getSpanKind() == SpanKind.SERVER) {
+            serverCustomizerCalled.set(true);
+            assertThat(customizer.getInstrumentationName()).isEqualTo("test");
+          } else if (customizer.getSpanKind() == null) {
+            // This case handles when spanKindExtractor throws an exception and returns null
+            exceptionCustomizerCalled.set(true);
+            assertThat(customizer.getInstrumentationName()).isEqualTo("test");
+          }
+        });
+
+    // Build client instrumenter
+    Instrumenter.<Map<String, String>, Map<String, String>>builder(
+            otelTesting.getOpenTelemetry(), "test", unused -> "client-span")
+        .buildClientInstrumenter((carrier, key, value) -> {
+        });
+
+    // Build server instrumenter
+    Instrumenter.<Map<String, String>, Map<String, String>>builder(
+            otelTesting.getOpenTelemetry(), "test", unused -> "server-span")
+        .buildServerInstrumenter(
+            new TextMapGetter<Map<String, String>>() {
+              @Override
+              public Iterable<String> keys(Map<String, String> carrier) {
+                return carrier.keySet();
+              }
+
+              @Override
+              public String get(Map<String, String> carrier, String key) {
+                return carrier.get(key);
+              }
+            });
+
+    // Build instrumenter with a span kind extractor that throws exception with null input
+    Instrumenter.<Map<String, String>, Map<String, String>>builder(
+            otelTesting.getOpenTelemetry(), "test", unused -> "test-span")
+        .buildInstrumenter(
+            request -> {
+              if (request == null) {
+                throw new NullPointerException("Request cannot be null");
+              }
+              return SpanKind.CLIENT;
+            });
+
+    assertThat(clientCustomizerCalled).isTrue();
+    assertThat(serverCustomizerCalled).isTrue();
+    assertThat(exceptionCustomizerCalled).isTrue();
   }
 
   @Test
