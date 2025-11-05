@@ -11,6 +11,8 @@ import static io.opentelemetry.sdk.testing.assertj.OpenTelemetryAssertions.equal
 import static io.opentelemetry.semconv.NetworkAttributes.NETWORK_PEER_ADDRESS;
 import static io.opentelemetry.semconv.NetworkAttributes.NETWORK_PEER_PORT;
 import static io.opentelemetry.semconv.NetworkAttributes.NETWORK_TYPE;
+import static io.opentelemetry.semconv.ServerAttributes.SERVER_ADDRESS;
+import static io.opentelemetry.semconv.ServerAttributes.SERVER_PORT;
 import static io.opentelemetry.semconv.incubating.DbIncubatingAttributes.DB_OPERATION;
 import static io.opentelemetry.semconv.incubating.DbIncubatingAttributes.DB_OPERATION_NAME;
 import static io.opentelemetry.semconv.incubating.DbIncubatingAttributes.DB_STATEMENT;
@@ -79,6 +81,8 @@ class Jedis40ClientTest {
                             equalTo(maybeStable(DB_SYSTEM), "redis"),
                             equalTo(maybeStable(DB_STATEMENT), "SET foo ?"),
                             equalTo(maybeStable(DB_OPERATION), "SET"),
+                            equalTo(SERVER_ADDRESS, redisServer.getHost()),
+                            equalTo(SERVER_PORT, port),
                             equalTo(NETWORK_TYPE, "ipv4"),
                             equalTo(NETWORK_PEER_PORT, port),
                             equalTo(NETWORK_PEER_ADDRESS, ip))));
@@ -109,6 +113,8 @@ class Jedis40ClientTest {
                             equalTo(maybeStable(DB_SYSTEM), "redis"),
                             equalTo(maybeStable(DB_STATEMENT), "SET foo ?"),
                             equalTo(maybeStable(DB_OPERATION), "SET"),
+                            equalTo(SERVER_ADDRESS, redisServer.getHost()),
+                            equalTo(SERVER_PORT, port),
                             equalTo(NETWORK_TYPE, "ipv4"),
                             equalTo(NETWORK_PEER_PORT, port),
                             equalTo(NETWORK_PEER_ADDRESS, ip))),
@@ -121,6 +127,8 @@ class Jedis40ClientTest {
                             equalTo(maybeStable(DB_SYSTEM), "redis"),
                             equalTo(maybeStable(DB_STATEMENT), "GET foo"),
                             equalTo(maybeStable(DB_OPERATION), "GET"),
+                            equalTo(SERVER_ADDRESS, redisServer.getHost()),
+                            equalTo(SERVER_PORT, port),
                             equalTo(NETWORK_TYPE, "ipv4"),
                             equalTo(NETWORK_PEER_PORT, port),
                             equalTo(NETWORK_PEER_ADDRESS, ip))));
@@ -143,6 +151,8 @@ class Jedis40ClientTest {
                             equalTo(maybeStable(DB_SYSTEM), "redis"),
                             equalTo(maybeStable(DB_STATEMENT), "SET foo ?"),
                             equalTo(maybeStable(DB_OPERATION), "SET"),
+                            equalTo(SERVER_ADDRESS, redisServer.getHost()),
+                            equalTo(SERVER_PORT, port),
                             equalTo(NETWORK_TYPE, "ipv4"),
                             equalTo(NETWORK_PEER_PORT, port),
                             equalTo(NETWORK_PEER_ADDRESS, ip))),
@@ -155,6 +165,8 @@ class Jedis40ClientTest {
                             equalTo(maybeStable(DB_SYSTEM), "redis"),
                             equalTo(maybeStable(DB_STATEMENT), "RANDOMKEY"),
                             equalTo(maybeStable(DB_OPERATION), "RANDOMKEY"),
+                            equalTo(SERVER_ADDRESS, redisServer.getHost()),
+                            equalTo(SERVER_PORT, port),
                             equalTo(NETWORK_TYPE, "ipv4"),
                             equalTo(NETWORK_PEER_PORT, port),
                             equalTo(NETWORK_PEER_ADDRESS, ip))));

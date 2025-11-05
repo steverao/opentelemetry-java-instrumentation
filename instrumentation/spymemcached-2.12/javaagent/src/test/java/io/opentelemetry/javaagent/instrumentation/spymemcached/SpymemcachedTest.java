@@ -16,6 +16,8 @@ import static io.opentelemetry.semconv.ExceptionAttributes.EXCEPTION_STACKTRACE;
 import static io.opentelemetry.semconv.ExceptionAttributes.EXCEPTION_TYPE;
 import static io.opentelemetry.semconv.incubating.DbIncubatingAttributes.DB_OPERATION;
 import static io.opentelemetry.semconv.incubating.DbIncubatingAttributes.DB_SYSTEM;
+import static io.opentelemetry.semconv.ServerAttributes.SERVER_ADDRESS;
+import static io.opentelemetry.semconv.ServerAttributes.SERVER_PORT;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonMap;
 import static net.spy.memcached.ConnectionFactoryBuilder.Protocol.BINARY;
@@ -153,6 +155,30 @@ class SpymemcachedTest {
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
                             equalTo(maybeStable(DB_OPERATION), "get"),
                             equalTo(stringKey("spymemcached.result"), "hit"))));
+  }
+
+  @Test
+  void testServerAddressAndPort() {
+    MemcachedClient memcached = getMemcached(singletonMap("test-server-attrs", "test value"));
+    testing.runWithSpan(
+        "parent", () -> assertThat(memcached.get(key("test-server-attrs"))).isEqualTo("test value"));
+
+    testing.waitAndAssertTraces(
+        trace ->
+            trace.hasSpansSatisfyingExactly(
+                span -> span.hasName("parent").hasNoParent().hasAttributes(Attributes.empty()),
+                span ->
+                    span.hasName("get")
+                        .hasKind(SpanKind.CLIENT)
+                        .hasParent(trace.getSpan(0))
+                        .hasAttributesSatisfyingExactly(
+                            equalTo(
+                                maybeStable(DB_SYSTEM),
+                                DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
+                            equalTo(maybeStable(DB_OPERATION), "get"),
+                            equalTo(stringKey("spymemcached.result"), "hit"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211)))));
   }
 
   @Test

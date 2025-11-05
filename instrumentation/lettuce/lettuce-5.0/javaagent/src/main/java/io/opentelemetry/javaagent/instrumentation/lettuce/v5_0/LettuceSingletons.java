@@ -36,6 +36,7 @@ public final class LettuceSingletons {
 
   static {
     LettuceDbAttributesGetter dbAttributesGetter = new LettuceDbAttributesGetter();
+    LettuceCommandNetworkAttributesGetter commandNetAttributesGetter = new LettuceCommandNetworkAttributesGetter();
 
     INSTRUMENTER =
         Instrumenter.<RedisCommand<?, ?, ?>, Void>builder(
@@ -43,6 +44,7 @@ public final class LettuceSingletons {
                 INSTRUMENTATION_NAME,
                 DbClientSpanNameExtractor.create(dbAttributesGetter))
             .addAttributesExtractor(DbClientAttributesExtractor.create(dbAttributesGetter))
+            .addAttributesExtractor(ServerAttributesExtractor.create(commandNetAttributesGetter))
             .addOperationMetrics(DbClientMetrics.get())
             .buildInstrumenter(SpanKindExtractor.alwaysClient());
 

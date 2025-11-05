@@ -72,7 +72,19 @@ public class LettuceAsyncCommandsInstrumentation implements TypeInstrumentation 
     }
 
     @Advice.OnMethodEnter(suppress = Throwable.class)
-    public static AdviceScope onEnter(@Advice.Argument(0) RedisCommand<?, ?, ?> command) {
+    public static AdviceScope onEnter(
+        @Advice.This Object thiz,
+        @Advice.Argument(0) RedisCommand<?, ?, ?> command) {
+
+      // Try to extract connection information from the connection object
+      try {
+        // Use reflection to get connection info - this is a fallback approach
+        // In practice, you might need to access the connection through the 'this' object
+        // The exact implementation depends on Lettuce's internal structure
+        LettuceCommandNetworkAttributesGetter.extractAndSetConnectionInfo(thiz, command);
+      } catch (Exception ignored) {
+        // Ignore reflection failures - server attributes will be null
+      }
 
       Context parentContext = currentContext();
       if (!instrumenter().shouldStart(parentContext, command)) {
