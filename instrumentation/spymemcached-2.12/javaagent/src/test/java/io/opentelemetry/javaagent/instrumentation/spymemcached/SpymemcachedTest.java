@@ -16,6 +16,8 @@ import static io.opentelemetry.semconv.ExceptionAttributes.EXCEPTION_STACKTRACE;
 import static io.opentelemetry.semconv.ExceptionAttributes.EXCEPTION_TYPE;
 import static io.opentelemetry.semconv.incubating.DbIncubatingAttributes.DB_OPERATION;
 import static io.opentelemetry.semconv.incubating.DbIncubatingAttributes.DB_SYSTEM;
+import static io.opentelemetry.semconv.ServerAttributes.SERVER_ADDRESS;
+import static io.opentelemetry.semconv.ServerAttributes.SERVER_PORT;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonMap;
 import static net.spy.memcached.ConnectionFactoryBuilder.Protocol.BINARY;
@@ -152,6 +154,8 @@ class SpymemcachedTest {
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
                             equalTo(maybeStable(DB_OPERATION), "get"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211)),
                             equalTo(stringKey("spymemcached.result"), "hit"))));
   }
 
@@ -174,6 +178,8 @@ class SpymemcachedTest {
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
                             equalTo(maybeStable(DB_OPERATION), "get"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211)),
                             equalTo(stringKey("spymemcached.result"), "miss"))));
   }
 
@@ -209,6 +215,8 @@ class SpymemcachedTest {
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
                             equalTo(maybeStable(DB_OPERATION), "get"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211)),
                             equalTo(booleanKey("spymemcached.command.cancelled"), true))));
   }
 
@@ -268,7 +276,9 @@ class SpymemcachedTest {
                             equalTo(
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
-                            equalTo(maybeStable(DB_OPERATION), "get"))));
+                            equalTo(maybeStable(DB_OPERATION), "get"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211)))));
   }
 
   @Test
@@ -296,7 +306,9 @@ class SpymemcachedTest {
                             equalTo(
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
-                            equalTo(maybeStable(DB_OPERATION), "getBulk"))));
+                            equalTo(maybeStable(DB_OPERATION), "getBulk"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211)))));
   }
 
   @Test
@@ -320,7 +332,9 @@ class SpymemcachedTest {
                             equalTo(
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
-                            equalTo(maybeStable(DB_OPERATION), "set"))));
+                            equalTo(maybeStable(DB_OPERATION), "set"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211)))));
   }
 
   @Test
@@ -357,6 +371,8 @@ class SpymemcachedTest {
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
                             equalTo(maybeStable(DB_OPERATION), "set"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211)),
                             equalTo(booleanKey("spymemcached.command.cancelled"), true))));
   }
 
@@ -392,6 +408,8 @@ class SpymemcachedTest {
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
                             equalTo(maybeStable(DB_OPERATION), "get"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211)),
                             equalTo(stringKey("spymemcached.result"), "hit"))));
   }
 
@@ -427,7 +445,9 @@ class SpymemcachedTest {
                             equalTo(
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
-                            equalTo(maybeStable(DB_OPERATION), "add"))));
+                            equalTo(maybeStable(DB_OPERATION), "add"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211)))));
   }
 
   @Test
@@ -462,6 +482,8 @@ class SpymemcachedTest {
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
                             equalTo(maybeStable(DB_OPERATION), "get"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211)),
                             equalTo(stringKey("spymemcached.result"), "miss"))));
   }
 
@@ -486,7 +508,9 @@ class SpymemcachedTest {
                             equalTo(
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
-                            equalTo(maybeStable(DB_OPERATION), "delete"))));
+                            equalTo(maybeStable(DB_OPERATION), "delete"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211)))));
   }
 
   @Test
@@ -522,6 +546,8 @@ class SpymemcachedTest {
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
                             equalTo(maybeStable(DB_OPERATION), "get"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211)),
                             equalTo(stringKey("spymemcached.result"), "hit"))));
   }
 
@@ -550,7 +576,9 @@ class SpymemcachedTest {
                             equalTo(
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
-                            equalTo(maybeStable(DB_OPERATION), "replace"))));
+                            equalTo(maybeStable(DB_OPERATION), "replace"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211)))));
   }
 
   @Test
@@ -596,6 +624,8 @@ class SpymemcachedTest {
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
                             equalTo(maybeStable(DB_OPERATION), "get"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211)),
                             equalTo(stringKey("spymemcached.result"), "hit"))));
   }
 
@@ -642,6 +672,8 @@ class SpymemcachedTest {
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
                             equalTo(maybeStable(DB_OPERATION), "get"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211)),
                             equalTo(stringKey("spymemcached.result"), "hit"))));
   }
 
@@ -678,7 +710,9 @@ class SpymemcachedTest {
                             equalTo(
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
-                            equalTo(maybeStable(DB_OPERATION), "cas"))));
+                            equalTo(maybeStable(DB_OPERATION), "cas"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211)))));
   }
 
   @Test
@@ -704,7 +738,9 @@ class SpymemcachedTest {
                             equalTo(
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
-                            equalTo(maybeStable(DB_OPERATION), "cas"))));
+                            equalTo(maybeStable(DB_OPERATION), "cas"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211)))));
   }
 
   @Test
@@ -728,7 +764,9 @@ class SpymemcachedTest {
                             equalTo(
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
-                            equalTo(maybeStable(DB_OPERATION), "touch"))));
+                            equalTo(maybeStable(DB_OPERATION), "touch"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211)))));
   }
 
   @Test
@@ -753,7 +791,9 @@ class SpymemcachedTest {
                             equalTo(
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
-                            equalTo(maybeStable(DB_OPERATION), "touch"))));
+                            equalTo(maybeStable(DB_OPERATION), "touch"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211)))));
   }
 
   @Test
@@ -778,7 +818,9 @@ class SpymemcachedTest {
                             equalTo(
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
-                            equalTo(maybeStable(DB_OPERATION), "getAndTouch"))));
+                            equalTo(maybeStable(DB_OPERATION), "getAndTouch"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211)))));
   }
 
   @Test
@@ -803,7 +845,9 @@ class SpymemcachedTest {
                             equalTo(
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
-                            equalTo(maybeStable(DB_OPERATION), "getAndTouch"))));
+                            equalTo(maybeStable(DB_OPERATION), "getAndTouch"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211)))));
   }
 
   @Test
@@ -842,6 +886,8 @@ class SpymemcachedTest {
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
                             equalTo(maybeStable(DB_OPERATION), "get"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211)),
                             equalTo(stringKey("spymemcached.result"), "hit"))));
   }
 
@@ -866,7 +912,9 @@ class SpymemcachedTest {
                             equalTo(
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
-                            equalTo(maybeStable(DB_OPERATION), "decr"))));
+                            equalTo(maybeStable(DB_OPERATION), "decr"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211)))));
   }
 
   @Test
@@ -894,7 +942,9 @@ class SpymemcachedTest {
                             equalTo(
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
-                            equalTo(maybeStable(DB_OPERATION), "decr"))));
+                            equalTo(maybeStable(DB_OPERATION), "decr"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211)))));
   }
 
   @Test
@@ -923,7 +973,9 @@ class SpymemcachedTest {
                             equalTo(
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
-                            equalTo(maybeStable(DB_OPERATION), "incr")),
+                            equalTo(maybeStable(DB_OPERATION), "incr"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211))),
                 span ->
                     span.hasName("get")
                         .hasKind(SpanKind.CLIENT)
@@ -933,6 +985,8 @@ class SpymemcachedTest {
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
                             equalTo(maybeStable(DB_OPERATION), "get"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211)),
                             equalTo(stringKey("spymemcached.result"), "hit"))));
   }
 
@@ -957,7 +1011,9 @@ class SpymemcachedTest {
                             equalTo(
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
-                            equalTo(maybeStable(DB_OPERATION), "incr"))));
+                            equalTo(maybeStable(DB_OPERATION), "incr"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211)))));
   }
 
   @Test
@@ -985,7 +1041,9 @@ class SpymemcachedTest {
                             equalTo(
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
-                            equalTo(maybeStable(DB_OPERATION), "incr"))));
+                            equalTo(maybeStable(DB_OPERATION), "incr"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211)))));
   }
 
   private static String key(String k) {
