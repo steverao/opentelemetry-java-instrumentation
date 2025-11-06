@@ -398,7 +398,9 @@ class SpymemcachedTest {
                             equalTo(
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
-                            equalTo(maybeStable(DB_OPERATION), "add")),
+                            equalTo(maybeStable(DB_OPERATION), "add"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211))),
                 span ->
                     span.hasName("get")
                         .hasKind(SpanKind.CLIENT)
@@ -436,7 +438,9 @@ class SpymemcachedTest {
                             equalTo(
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
-                            equalTo(maybeStable(DB_OPERATION), "add")),
+                            equalTo(maybeStable(DB_OPERATION), "add"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211))),
                 span ->
                     span.hasName("add")
                         .hasKind(SpanKind.CLIENT)
@@ -472,7 +476,9 @@ class SpymemcachedTest {
                             equalTo(
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
-                            equalTo(maybeStable(DB_OPERATION), "delete")),
+                            equalTo(maybeStable(DB_OPERATION), "delete"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211))),
                 span ->
                     span.hasName("get")
                         .hasKind(SpanKind.CLIENT)
@@ -536,7 +542,9 @@ class SpymemcachedTest {
                             equalTo(
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
-                            equalTo(maybeStable(DB_OPERATION), "replace")),
+                            equalTo(maybeStable(DB_OPERATION), "replace"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211))),
                 span ->
                     span.hasName("get")
                         .hasKind(SpanKind.CLIENT)
@@ -605,7 +613,9 @@ class SpymemcachedTest {
                             equalTo(
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
-                            equalTo(maybeStable(DB_OPERATION), "gets")),
+                            equalTo(maybeStable(DB_OPERATION), "gets"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211))),
                 span ->
                     span.hasName("append")
                         .hasKind(SpanKind.CLIENT)
@@ -614,7 +624,9 @@ class SpymemcachedTest {
                             equalTo(
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
-                            equalTo(maybeStable(DB_OPERATION), "append")),
+                            equalTo(maybeStable(DB_OPERATION), "append"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211))),
                 span ->
                     span.hasName("get")
                         .hasKind(SpanKind.CLIENT)
@@ -653,7 +665,9 @@ class SpymemcachedTest {
                             equalTo(
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
-                            equalTo(maybeStable(DB_OPERATION), "gets")),
+                            equalTo(maybeStable(DB_OPERATION), "gets"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211))),
                 span ->
                     span.hasName("prepend")
                         .hasKind(SpanKind.CLIENT)
@@ -662,7 +676,9 @@ class SpymemcachedTest {
                             equalTo(
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
-                            equalTo(maybeStable(DB_OPERATION), "prepend")),
+                            equalTo(maybeStable(DB_OPERATION), "prepend"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211))),
                 span ->
                     span.hasName("get")
                         .hasKind(SpanKind.CLIENT)
@@ -701,7 +717,9 @@ class SpymemcachedTest {
                             equalTo(
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
-                            equalTo(maybeStable(DB_OPERATION), "gets")),
+                            equalTo(maybeStable(DB_OPERATION), "gets"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211))),
                 span ->
                     span.hasName("cas")
                         .hasKind(SpanKind.CLIENT)
@@ -876,7 +894,9 @@ class SpymemcachedTest {
                             equalTo(
                                 maybeStable(DB_SYSTEM),
                                 DbIncubatingAttributes.DbSystemIncubatingValues.MEMCACHED),
-                            equalTo(maybeStable(DB_OPERATION), "decr")),
+                            equalTo(maybeStable(DB_OPERATION), "decr"),
+                            equalTo(SERVER_ADDRESS, memcachedContainer.getHost()),
+                            equalTo(SERVER_PORT, memcachedContainer.getMappedPort(11211))),
                 span ->
                     span.hasName("get")
                         .hasKind(SpanKind.CLIENT)
