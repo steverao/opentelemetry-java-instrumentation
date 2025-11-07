@@ -11,6 +11,7 @@ import io.opentelemetry.instrumentation.api.incubator.semconv.db.DbClientMetrics
 import io.opentelemetry.instrumentation.api.incubator.semconv.db.DbClientSpanNameExtractor;
 import io.opentelemetry.instrumentation.api.instrumenter.Instrumenter;
 import io.opentelemetry.instrumentation.api.instrumenter.SpanKindExtractor;
+import io.opentelemetry.instrumentation.api.semconv.network.NetworkAttributesExtractor;
 import io.opentelemetry.instrumentation.api.semconv.network.ServerAttributesExtractor;
 
 public final class SpymemcachedSingletons {
@@ -30,6 +31,7 @@ public final class SpymemcachedSingletons {
                 DbClientSpanNameExtractor.create(dbAttributesGetter))
             .addAttributesExtractor(DbClientAttributesExtractor.create(dbAttributesGetter))
             .addAttributesExtractor(ServerAttributesExtractor.create(netAttributesGetter))
+            .addAttributesExtractor(NetworkAttributesExtractor.create(netAttributesGetter))
             .addOperationMetrics(DbClientMetrics.get())
             .buildInstrumenter(SpanKindExtractor.alwaysClient());
   }

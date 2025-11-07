@@ -12,6 +12,9 @@ import io.opentelemetry.context.Context;
 import io.opentelemetry.javaagent.bootstrap.internal.AgentInstrumentationConfig;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
+import javax.annotation.Nullable;
+import net.spy.memcached.MemcachedNode;
+import net.spy.memcached.ops.Operation;
 
 public abstract class CompletionListener<T> {
 
@@ -35,6 +38,11 @@ public abstract class CompletionListener<T> {
   protected void closeAsyncSpan(T future) {
     Span span = Span.fromContext(context);
     try {
+      MemcachedNode handlingNode = extractHandlingNodeFromFuture(future);
+      if (handlingNode != null) {
+        SpymemcachedRequestContext.setCurrentHandlingNode(handlingNode);
+      }
+
       processResult(span, future);
     } catch (CancellationException e) {
       if (CAPTURE_EXPERIMENTAL_SPAN_ATTRIBUTES) {
@@ -58,8 +66,33 @@ public abstract class CompletionListener<T> {
       // This should never happen, just in case to make sure we cover all unexpected exceptions
       instrumenter().end(context, request, null, t);
     } finally {
-      instrumenter().end(context, request, future, null);
+      try {
+        instrumenter().end(context, request, future, null);
+      } finally {
+        SpymemcachedRequestContext.clearCurrentHandlingNode();
+      }
     }
+  }
+
+  @Nullable
+  private MemcachedNode extractHandlingNodeFromFuture(T future) {
+    Operation operation = extractOperationFromFuture(future);
+    if (operation != null) {
+      return VirtualFieldStore.getNode(operation);
+    }
+    return null;
+  }
+
+  @Nullable
+  private Operation extractOperationFromFuture(T future) {
+    if (future instanceof net.spy.memcached.internal.OperationFuture) {
+      return VirtualFieldStore.getOperation((net.spy.memcached.internal.OperationFuture<?>) future);
+    }
+
+    if (future instanceof net.spy.memcached.internal.GetFuture) {
+      return VirtualFieldStore.getOperation((net.spy.memcached.internal.GetFuture<?>) future);
+    }
+    return null;
   }
 
   protected void closeSyncSpan(Throwable thrown) {
