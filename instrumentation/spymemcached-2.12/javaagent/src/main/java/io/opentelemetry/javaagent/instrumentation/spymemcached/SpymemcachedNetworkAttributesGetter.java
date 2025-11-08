@@ -19,7 +19,7 @@ final class SpymemcachedNetworkAttributesGetter
   @Nullable
   @Override
   public String getServerAddress(SpymemcachedRequest request) {
-    MemcachedNode handlingNode = SpymemcachedRequestContext.getCurrentHandlingNode();
+    MemcachedNode handlingNode = request.getHandlingNode();
     if (handlingNode != null) {
       SocketAddress socketAddress = handlingNode.getSocketAddress();
       if (socketAddress instanceof InetSocketAddress) {
@@ -32,25 +32,11 @@ final class SpymemcachedNetworkAttributesGetter
   @Nullable
   @Override
   public Integer getServerPort(SpymemcachedRequest request) {
-    MemcachedNode handlingNode = SpymemcachedRequestContext.getCurrentHandlingNode();
+    MemcachedNode handlingNode = request.getHandlingNode();
     if (handlingNode != null) {
       SocketAddress socketAddress = handlingNode.getSocketAddress();
       if (socketAddress instanceof InetSocketAddress) {
         return ((InetSocketAddress) socketAddress).getPort();
-      }
-    }
-    return null;
-  }
-
-  @Nullable
-  @Override
-  public InetSocketAddress getNetworkPeerInetSocketAddress(
-      SpymemcachedRequest request, @Nullable Object response) {
-    MemcachedNode handlingNode = SpymemcachedRequestContext.getCurrentHandlingNode();
-    if (handlingNode != null) {
-      SocketAddress socketAddress = handlingNode.getSocketAddress();
-      if (socketAddress instanceof InetSocketAddress) {
-        return (InetSocketAddress) socketAddress;
       }
     }
     return null;
