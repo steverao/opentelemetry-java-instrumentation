@@ -13,6 +13,10 @@ The application contains:
 The built-in client is used so that the reproducer sends a normal WebSocket close frame instead of
 relying on an abruptly terminated client process.
 
+The reproduction does not manually supply a `traceparent` header. The bug is reproducible when the
+agent creates the trace for the incoming WebSocket upgrade request normally, without a fixed trace
+ID or an externally forced sampling decision.
+
 ## Tested environment
 
 - OpenTelemetry Java agent 2.31.1
@@ -55,6 +59,8 @@ Open the WebSocket connection:
 ```shell
 curl --fail 'http://127.0.0.1:8093/test/connect?sessionId=normal-close'
 ```
+
+No `traceparent` header or other tracing header needs to be added to this request.
 
 The application reports one active session and the logging exporter emits
 `DDSWebSocketHandler.handle`. Keep the application running, then close the same session normally:
